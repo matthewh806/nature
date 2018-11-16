@@ -1,13 +1,13 @@
 // var theta;
 
 var canvas;
-var tree = [];
-var leaves = [];
+
 var iter = 0;
 
 const MAX_ITER = 10;
 const SELF_SUSTAINING = true;
 
+var tree;
 var plant_tree_btn;
 
 var tree_planted = false;
@@ -31,7 +31,8 @@ function plantTree() {
 	if(tree_planted)
 		return;
 
-	setupTree();
+	tree = new Tree();
+	tree.setupTree();
 	tree_planted = true;
 }
 
@@ -42,61 +43,14 @@ function updateTree() {
 	if(SELF_SUSTAINING || iter > MAX_ITER)
 		return;
 
-	growTree();	
+	tree.growTree();	
 }
 
 function draw() {
 	background('#cdebf9');
 
-	for(var i = 0; i < tree.length; i++) {
-		tree[i].show();
-	}
-
-	for(var i = 0; i < leaves.length; i++) {
-		fill(255, 0, 100, 100);
-		ellipse(leaves[i].x, leaves[i].y, 8, 8);
-		// leaves[i].y += random(-1, 1);
-	}
-}
-
-function setupTree() {
-	var a = createVector(width / 2, height);
-	var b = createVector(width / 2, height - 100);
-	var root = new Branch(a, b);
-
-	tree[0] = root;
-
-	if(SELF_SUSTAINING) {
-		interval = setInterval(function() {
-			growTree();
-
-			if(iter > MAX_ITER) {
-				// tree complete
-				clearInterval(interval);
-
-				for(var i = 0; i < tree.length; i++) {
-					if(!tree[i].finished) {
-						var leaf = tree[i].end.copy();
-						leaves.push(leaf);
-					}
-				}
-			}
-		}, 1000);
-	}
-
-}
-
-function growTree() {
-	for(var i = tree.length-1; i >= 0; i--) {
-		if(!tree[i].finished) {
-			tree.push(tree[i].branchA());
-			tree.push(tree[i].branchB());
-		}
-
-		tree[i].finished = true;
-	}
-
-	iter++;
+	if(tree_planted)
+		tree.drawTree();
 }
 
 // function setup() {
