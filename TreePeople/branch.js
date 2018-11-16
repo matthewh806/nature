@@ -6,6 +6,11 @@ function Branch(begin, end, color) {
   	this.sw = map(this.mag, 2,120,1,10);
   	this.angle = random(0, PI/2);
 
+  	this.jitter = function() {
+  		this.end.x += random(-1, 1);
+  		this.end.y += random(-1, 1);
+  	}
+
 	this.show = function() {
 		strokeWeight(this.sw);
 		stroke('#000000');

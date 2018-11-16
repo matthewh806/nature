@@ -1,19 +1,65 @@
 // var theta;
 
+var canvas;
 var tree = [];
+var leaves = [];
 var iter = 0;
 
 const MAX_ITER = 10;
 const SELF_SUSTAINING = true;
+
+var plant_tree_btn;
+
+var tree_planted = false;
 
 function preload() {
 
 }
 
 function setup() {
-	createCanvas(640, 360);
+	canvas = createCanvas(640, 360);
+	canvas.class("garden");
+
 	background('#cdebf9');	
 
+	plant_tree_btn = createButton('Plant tree!');
+	plant_tree_btn.position(580, 19);
+	plant_tree_btn.mousePressed(plantTree);
+}
+
+function plantTree() {
+	if(tree_planted)
+		return;
+
+	setupTree();
+	tree_planted = true;
+}
+
+function updateTree() {
+	if(!tree_planted)
+		return;
+
+	if(SELF_SUSTAINING || iter > MAX_ITER)
+		return;
+
+	growTree();	
+}
+
+function draw() {
+	background('#cdebf9');
+
+	for(var i = 0; i < tree.length; i++) {
+		tree[i].show();
+	}
+
+	for(var i = 0; i < leaves.length; i++) {
+		fill(255, 0, 100, 100);
+		ellipse(leaves[i].x, leaves[i].y, 8, 8);
+		// leaves[i].y += random(-1, 1);
+	}
+}
+
+function setupTree() {
 	var a = createVector(width / 2, height);
 	var b = createVector(width / 2, height - 100);
 	var root = new Branch(a, b);
@@ -25,24 +71,19 @@ function setup() {
 			growTree();
 
 			if(iter > MAX_ITER) {
+				// tree complete
 				clearInterval(interval);
+
+				for(var i = 0; i < tree.length; i++) {
+					if(!tree[i].finished) {
+						var leaf = tree[i].end.copy();
+						leaves.push(leaf);
+					}
+				}
 			}
 		}, 1000);
 	}
-}
 
-function mousePressed() {
-	if(SELF_SUSTAINING || iter > MAX_ITER)
-		return;
-
-	console.log(iter);
-	growTree();	
-}
-
-function draw() {
-	for(var i = 0; i < tree.length; i++) {
-		tree[i].show();
-	}
 }
 
 function growTree() {
