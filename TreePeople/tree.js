@@ -1,11 +1,17 @@
-function Tree() {
+const MAX_ITER = 10;
+const SELF_SUSTAINING = true;
 
+function Tree(index, position_x, position_y) {
 	this.branches = []; // includes trunk b careful!!
 	this.leaves = [];
+	this.iter = 0;
+	this.index = index;
 
 	this.setupTree = function() {
-		var a = createVector(width / 2, height);
-		var b = createVector(width / 2, height - 100);
+		console.log("setup:" + this.getTreeName());
+
+		var a = createVector(position_x, position_y);
+		var b = createVector(position_x, position_y - 100);
 		var root = new Branch(a, b);
 
 		this.branches[0] = root;
@@ -13,6 +19,10 @@ function Tree() {
 		if(SELF_SUSTAINING) {
 			interval = setInterval(_.bind(this._growTree, this), 1000);
 		}
+	}
+
+	this.getTreeName = function() {
+		return "Tree: " + this.name;
 	}
 
 	this.drawTree = function() {
@@ -28,10 +38,13 @@ function Tree() {
 	}
 
 	this._growTree = function() {
+		console.log("grow:" + this.getTreeName());
+
 		this._addBranches();
 
 		if(iter > MAX_ITER) {
 			// tree complete
+			console.log("finish growing:" + this.getTreeName());
 			clearInterval(interval);
 			this._addLeaves();
 		}
