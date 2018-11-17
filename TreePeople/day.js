@@ -8,27 +8,27 @@ var PART_OF_DAY = {
 	NIGHT: 4
 };
 
-FIXED_TIME = PART_OF_DAY.MORNING;
+FIXED_TIME = PART_OF_DAY.EVENING;
 
 function Day() {
 
 	this.getTreeColorSchemeForCurrentTime = function() {
 		if(this._isMorning() || this._isAfternoon()) 
 			return { 
-				leaf_color_set: ['#ff0064', '#a0d5b5', '#ffffff', '#cf4532', '#cf9332', '#bdcf32'],
-				trunk_colors: []
+				leafColorSet: ['#ff0064', '#a0d5b5', '#ffffff', '#cf4532', '#cf9332', '#bdcf32'],
+				branchColor: '#000000'
 			}
 
 		if(this._isEvening()) 
 			return { 
-				leaf_color_set: ['#bfff00'],
-				trunk_colors: []
+				leafColorSet: ['#bfff00'],
+				branchColor: '#000000'
 			}
 
 		if(this._isNight()) 
 			return { 
-				leaf_color_set: ['#ff9933'],
-				trunk_colors: []
+				leafColorSet: ['#ff9933'],
+				branchColor: '#ffffff'
 			}
 	}
 
@@ -63,9 +63,6 @@ function Day() {
 		if(DEV_MODE)
 			return FIXED_TIME;
 
-		if(hour() < 7 || hour() > 21)
-			return PART_OF_DAY.NIGHT;
-
 		if(hour() < 12) 
 			return PART_OF_DAY.DAY;
 
@@ -74,6 +71,8 @@ function Day() {
 
 		if(hour() < 21)
 			return PART_OF_DAY.EVENING;
+
+		return PART_OF_DAY.NIGHT;
 	}
 }
 

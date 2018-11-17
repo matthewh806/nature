@@ -10,6 +10,7 @@ function Tree(index, position_x, position_y, growth_rate, config) {
 	this.fixed_angle = undefined;
 	this.fully_grown = false; 
 	this.leaf_color_set = DEFAULT_LEAF_COLOR_SET;
+	this.branch_color = "#000000";
 	this.tree_size = int(random(70, 130));
 	this.growth_rate = (typeof growth_rate === 'undefined') ? 1000 : growth_rate;
 	this.config = config;
@@ -19,7 +20,8 @@ function Tree(index, position_x, position_y, growth_rate, config) {
 		this.fixed_angle = this.setFixedAngle();
 
 		if(this.config) {
-			this.leaf_color_set = this.config.colorScheme.leaf_color_set;
+			this.leaf_color_set = this.config.colorScheme.leafColorSet;
+			this.branch_color = this.config.colorScheme.branchColor;
 		}
 
 		this.leaf_color = color(this.leaf_color_set[int(random(0, this.leaf_color_set.length))])
@@ -28,7 +30,7 @@ function Tree(index, position_x, position_y, growth_rate, config) {
 		var b = createVector(position_x, position_y - this.tree_size);
 
 		var angle = this.fixed_angle ? random(PI/6, PI/2) : undefined;
-		var root = new Branch(a, b, undefined, angle, this.fixed_angle, 0.67);
+		var root = new Branch(a, b, this.branch_color, angle, this.fixed_angle, 0.67);
 
 		this.branches[0] = root;
 

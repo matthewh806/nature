@@ -7,11 +7,11 @@ function Branch(begin, end, color, angle, fixed_angle, scale_factor) {
 	this.fixed_angle = fixed_angle;
 	this.angle = (typeof angle === 'undefined') ? random(0, PI/2) : angle;
 	this.scale_factor = (typeof scale_factor === 'undefined') ? random(0.45, 0.68) : scale_factor;
-	this.color = (typeof color === 'undefined') ? '#000000' : color;
+	this.color = color;
 
 	this.show = function() {
 		strokeWeight(this.sw);
-		stroke("#000000");
+		stroke(this.color);
 		line(this.begin.x, this.begin.y, this.end.x, this.end.y);
 	}
 
@@ -29,7 +29,7 @@ function Branch(begin, end, color, angle, fixed_angle, scale_factor) {
 		dir.mult(mult_factor);
 
 		var newEnd = p5.Vector.add(end, dir);
-		var b = new Branch(end, newEnd, color, this.fixed_angle ? angle : undefined, this.fixed_angle, mult_factor);
+		var b = new Branch(end, newEnd, this.color, this.fixed_angle ? angle : undefined, this.fixed_angle, mult_factor);
 
 		// console.log("Created Branch: begin: " + b.begin + " , end: " + b.end, ", angle: " + b.angle + ", color: " + b.color + ", scale_factor: " + b.scale_factor);
 		return b;
