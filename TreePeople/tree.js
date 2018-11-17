@@ -1,21 +1,28 @@
 const MAX_ITER = 10;
 const SELF_SUSTAINING = true;
-const LEAF_COLORS = ['#ff0064', '#a0d5b5', '#ffffff', '#cf4532', '#cf9332', '#bdcf32'];
+const DEFAULT_LEAF_COLOR_SET = ['#ff0064', '#a0d5b5', '#ffffff', '#cf4532', '#cf9332', '#bdcf32'];
 
-function Tree(index, position_x, position_y, growth_rate) {
+function Tree(index, position_x, position_y, growth_rate, config) {
 	this.branches = []; // includes trunk b careful!!
 	this.leaves = [];
 	this.iter = 0;
 	this.index = index;
 	this.fixed_angle = undefined;
 	this.fully_grown = false; 
-	this.leaf_color = color(LEAF_COLORS[int(random(0, LEAF_COLORS.length))]);
+	this.leaf_color_set = DEFAULT_LEAF_COLOR_SET;
 	this.tree_size = int(random(70, 130));
 	this.growth_rate = (typeof growth_rate === 'undefined') ? 1000 : growth_rate;
+	this.config = config;
 
 	this.setupTree = function() {
 		console.log("setup:" + this.getTreeName());
 		this.fixed_angle = this.setFixedAngle();
+
+		if(this.config) {
+			this.leaf_color_set = this.config.colorScheme.leaf_color_set;
+		}
+
+		this.leaf_color = color(this.leaf_color_set[int(random(0, this.leaf_color_set.length))])
 
 		var a = createVector(position_x, position_y);
 		var b = createVector(position_x, position_y - this.tree_size);

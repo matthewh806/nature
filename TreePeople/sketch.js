@@ -69,7 +69,14 @@ function plantTree() {
 	console.log(width/(this.max_trees+1));
 
 	var speed = getRandomProperty(TREE_GROWTH_SPEEDS)
-	var tree = new Tree(idx, (idx/this.max_trees)*width+(width/(this.max_trees*2)), height, speed);
+	var scheme = day.getTreeColorSchemeForCurrentTime();
+
+	var config = {
+		colorScheme: scheme
+	};
+
+	var x_pos = (idx/this.max_trees)*width+(width/(this.max_trees*2));
+	var tree = new Tree(idx, x_pos, height, speed, config);
 	tree.setupTree();
 	trees.push(tree);
 
