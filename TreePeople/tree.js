@@ -1,6 +1,6 @@
 const MAX_ITER = 10;
 const SELF_SUSTAINING = true;
-const LEAF_COLORS = ['#ff0064', '#a0d5b5', '#ffffff', 'ffb3a7'];
+const LEAF_COLORS = ['#ff0064', '#a0d5b5', '#ffffff', '#cf4532', '#cf9332', '#bdcf32'];
 
 function Tree(index, position_x, position_y, growth_rate) {
 	this.branches = []; // includes trunk b careful!!
@@ -9,7 +9,7 @@ function Tree(index, position_x, position_y, growth_rate) {
 	this.index = index;
 	this.fixed_angle = undefined;
 	this.fully_grown = false; 
-	this.leaf_color = LEAF_COLORS[int(random(0, LEAF_COLORS.length))];
+	this.leaf_color = color(LEAF_COLORS[int(random(0, LEAF_COLORS.length))]);
 	this.tree_size = int(random(70, 130));
 	this.growth_rate = (typeof growth_rate === 'undefined') ? 1000 : growth_rate;
 

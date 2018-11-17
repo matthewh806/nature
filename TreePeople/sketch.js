@@ -1,3 +1,5 @@
+const DEV_MODE = false;
+
 var canvas;
 
 var iter = 0;
@@ -8,10 +10,9 @@ var plant_tree_btn;
 var tree_planted = false;
 
 const TREE_WIDTH = 200;
-
-const TREE_GROWTH_SPEEDS = {"SLOW": 10000,"MEDIUM": 5000, "FAST": 1000, "STUPID_FAST_DEV_SPEED": 0} // milliseconds
-
-const DEV_MODE = true;
+const TREE_GROWTH_SPEEDS = {"SLOW": 3000,"MEDIUM": 1500, "FAST": 1000, "STUPID_FAST_DEV_SPEED": 0} // milliseconds
+const Y_AXIS = 1;
+const X_AXIS = 2;
 
 function preload() {
 
@@ -30,8 +31,6 @@ function getRandomProperty(obj) {
 function setup() {
 	canvas = createCanvas(1200, 600);
 	canvas.class("garden");
-
-	background('#cdebf9');	
 
 	plant_tree_btn = createButton('Plant tree!');
 	plant_tree_btn.position(580, 19);
@@ -75,7 +74,8 @@ function plantTree() {
 }
 
 function draw() {
-	background('#cdebf9');
+	var target_c = getTimeBasedBackgroundColor();
+	setGradient(0, 0, width, height, color('#ffffff'), target_c, Y_AXIS);
 
 	if(tree_planted) {
 		_.each(trees, function(t) { t.drawTree(); });
@@ -85,4 +85,38 @@ function draw() {
 function maxTreesPlanted() {
 	console.log(trees.length);
 	return trees.length === this.max_trees;
+}
+
+function setGradient(x, y, w, h, c1, c2, axis) {
+	noFill();
+
+	if(axis == Y_AXIS) {
+		for(var i = y; i <= y+h; i++) {
+			var inter = map(i, y, y+h, 0, 1);
+			var c = lerpColor(c2, c1, inter); // This is just a hack to get around the inverse y axis of processing!
+			stroke(c);
+			line(x, i, x+w, i);
+		}
+	} else if(axis == X_AXIS) {
+		for(var i = x; i <= x+w; i++) {
+			var inter = map(i, x, x+w, 0, 1);
+			var c = lerpColor(c1, c2, inter);
+			stroke(c);
+			line(i, y, i, y+h)
+		}
+	}
+}
+
+function getTimeBasedBackgroundColor() {
+	if(hour() < 7 || hour() > 21) {
+		return color('#000000');
+	}
+
+	if(hour() < 17) 
+		return color('#cdebf9');
+
+	if(hour() < 21) {
+		return color('#ffd6d6');
+	}
+
 }
