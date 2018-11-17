@@ -7,16 +7,21 @@ function Tree(index, position_x, position_y, growth_rate) {
 	this.leaves = [];
 	this.iter = 0;
 	this.index = index;
-	this.fully_grown = false;
+	this.fixed_angle = undefined;
+	this.fully_grown = false; 
 	this.leaf_color = LEAF_COLORS[int(random(0, LEAF_COLORS.length))];
 	this.tree_size = int(random(70, 130));
 	this.growth_rate = (typeof growth_rate === 'undefined') ? 1000 : growth_rate;
+
 	this.setupTree = function() {
 		console.log("setup:" + this.getTreeName());
+		this.fixed_angle = this.setFixedAngle();
 
 		var a = createVector(position_x, position_y);
 		var b = createVector(position_x, position_y - this.tree_size);
-		var root = new Branch(a, b, undefined, undefined, 0.67);
+
+		var angle = this.fixed_angle ? random(PI/6, PI/2) : undefined;
+		var root = new Branch(a, b, undefined, angle, this.fixed_angle, 0.67);
 
 		this.branches[0] = root;
 
@@ -31,9 +36,19 @@ function Tree(index, position_x, position_y, growth_rate) {
 		return "Tree: " + this.index;
 	}
 
+	this.setFixedAngle = function() {
+		var val = random();
+
+		if(val < 0.25) {
+			return true;
+		}
+
+		return false;
+	}
+
 	this.getTreeDescriptionString = function() {
 		return "Tree: id: " + this.index + ", leaf col: " + this.leaf_color + 
-		", growth_rate (ms): " + this.growth_rate + ", tree_size: " + this.tree_size + ", branch scale factor: " + this.branches[0].scale_factor;
+		", growth_rate (ms): " + this.growth_rate + ", tree_size: " + this.tree_size + ", fixed_angle: " + this.fixed_angle +  ", branch scale factor: " + this.branches[0].scale_factor;
 	}
 
 	this.drawTree = function() {

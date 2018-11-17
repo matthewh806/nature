@@ -1,11 +1,11 @@
-function Branch(begin, end, color, angle, scale_factor) {
+function Branch(begin, end, color, angle, fixed_angle, scale_factor) {
 	this.begin = begin;
 	this.end = end;
 	this.finished = false;
-
 	this.mag = p5.Vector.sub(this.end, this.begin).mag();
 	this.sw = map(this.mag, 2,120,1,10);
-	this.angle = (typeof angle === 'undefined') ? random(0, PI/3) : angle;
+	this.fixed_angle = fixed_angle;
+	this.angle = (typeof angle === 'undefined') ? random(PI/6, PI/2) : angle;
 	this.scale_factor = (typeof scale_factor === 'undefined') ? random(0.45, 0.68) : scale_factor;
 	this.color = (typeof color === 'undefined') ? '#000000' : color;
 
@@ -29,9 +29,9 @@ function Branch(begin, end, color, angle, scale_factor) {
 		dir.mult(mult_factor);
 
 		var newEnd = p5.Vector.add(end, dir);
-		var b = new Branch(end, newEnd, color, undefined, mult_factor);
+		var b = new Branch(end, newEnd, color, this.fixed_angle ? angle : undefined, mult_factor);
 
-		console.log("Created Branch: begin: " + b.begin + " , end: " + b.end, ", angle: " + b.angle + ", color: " + b.color + ", scale_factor: " + b.scale_factor);
+		// console.log("Created Branch: begin: " + b.begin + " , end: " + b.end, ", angle: " + b.angle + ", color: " + b.color + ", scale_factor: " + b.scale_factor);
 		return b;
 	}
 }
