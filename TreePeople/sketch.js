@@ -1,3 +1,5 @@
+import * as p5 from './p5.js'
+
 const DEV_MODE = false;
 var canvas;
 
