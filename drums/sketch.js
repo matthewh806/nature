@@ -1,4 +1,4 @@
-var kicks = []
+var sounds = []
 var drums
 
 var rect_x = 150;
@@ -8,7 +8,12 @@ var rect_h = 100;
 
 function preload() {
 	soundFormats('wav');
-	kicks = [loadSound('../assets/sounds/kick1.wav'), loadSound('../assets/sounds/kick2.wav'), loadSound('../assets/sounds/kick3.wav'), loadSound('../assets/sounds/kick4.wav')]
+
+	for(var i = 1; i <= 12; i++) {
+		var idx = (i >= 10) ? ('0'+ i) : ('00' + i);
+		var s = loadSound('../assets/sounds/mouth_noises/mouth_sounds-' + idx + ".wav");
+		sounds.push(s);
+	}
 }
 
 function setup() {
@@ -21,7 +26,7 @@ function setup() {
 
 	circles = new Group(); 
 
-	for(var i = 0; i < 90; i++) {
+	for(var i = 0; i < 10; i++) {
 		var c = createSprite(random(0, width), random(0, height));
 		c.addAnimation('normal', '../assets/asterisk_circle0006.png', '../assets/asterisk_circle0008.png');
 
@@ -34,8 +39,8 @@ function setup() {
 		circles.add(c);
 	}
 
-	for(var i = 0; i < kicks.length; i++) {
-		kicks[i].setVolume(0.4);
+	for(var i = 0; i < sounds.length; i++) {
+		sounds[i].setVolume(0.4);
 	}
 }
 
@@ -43,7 +48,7 @@ function draw() {
 	background('#ffb6c1');
 
 	circles.bounce(circles, function(a, b) {
-		kicks[int(random(0, kicks.length))].play();
+		sounds[int(random(0, sounds.length))].play();
 	});
 
 	for(var i=0; i < circles.length; i++) {
