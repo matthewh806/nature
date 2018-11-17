@@ -1,11 +1,12 @@
-const DEV_MODE = false;
-
+const DEV_MODE = true;
 var canvas;
 
 var iter = 0;
 
 var trees = [];
 var plant_tree_btn;
+
+var day;
 
 var tree_planted = false;
 
@@ -31,6 +32,8 @@ function getRandomProperty(obj) {
 function setup() {
 	canvas = createCanvas(1200, 600);
 	canvas.class("garden");
+
+	day = new Day();
 
 	plant_tree_btn = createButton('Plant tree!');
 	plant_tree_btn.position(580, 19);
@@ -74,7 +77,7 @@ function plantTree() {
 }
 
 function draw() {
-	var target_c = getTimeBasedBackgroundColor();
+	var target_c = day.getColorForCurrentTime();
 	setGradient(0, 0, width, height, color('#ffffff'), target_c, Y_AXIS);
 
 	if(tree_planted) {
@@ -105,18 +108,4 @@ function setGradient(x, y, w, h, c1, c2, axis) {
 			line(i, y, i, y+h)
 		}
 	}
-}
-
-function getTimeBasedBackgroundColor() {
-	if(hour() < 7 || hour() > 21) {
-		return color('#000000');
-	}
-
-	if(hour() < 17) 
-		return color('#cdebf9');
-
-	if(hour() < 21) {
-		return color('#ffd6d6');
-	}
-
 }
