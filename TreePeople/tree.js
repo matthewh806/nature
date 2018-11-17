@@ -1,29 +1,39 @@
 const MAX_ITER = 10;
 const SELF_SUSTAINING = true;
+const LEAF_COLORS = ['#ff0064', '#a0d5b5', '#ffffff', 'ffb3a7'];
 
-function Tree(index, position_x, position_y) {
+function Tree(index, position_x, position_y, growth_rate) {
 	this.branches = []; // includes trunk b careful!!
 	this.leaves = [];
 	this.iter = 0;
 	this.index = index;
 	this.fully_grown = false;
-
+	this.leaf_color = LEAF_COLORS[int(random(0, LEAF_COLORS.length))];
+	this.tree_size = int(random(70, 130));
+	this.growth_rate = (typeof growth_rate === 'undefined') ? 1000 : growth_rate;
 	this.setupTree = function() {
 		console.log("setup:" + this.getTreeName());
 
 		var a = createVector(position_x, position_y);
-		var b = createVector(position_x, position_y - 100);
-		var root = new Branch(a, b);
+		var b = createVector(position_x, position_y - this.tree_size);
+		var root = new Branch(a, b, undefined, undefined, 0.67);
 
 		this.branches[0] = root;
 
 		if(SELF_SUSTAINING) {
-			this.interval = setInterval(_.bind(this._growTree, this), 1000);
+			this.interval = setInterval(_.bind(this._growTree, this), this.growth_rate);
 		}
+
+		console.log("Finished setup: " + this.getTreeDescriptionString());	
 	}
 
 	this.getTreeName = function() {
 		return "Tree: " + this.index;
+	}
+
+	this.getTreeDescriptionString = function() {
+		return "Tree: id: " + this.index + ", leaf col: " + this.leaf_color + 
+		", growth_rate (ms): " + this.growth_rate + ", tree_size: " + this.tree_size + ", branch scale factor: " + this.branches[0].scale_factor;
 	}
 
 	this.drawTree = function() {
@@ -32,9 +42,8 @@ function Tree(index, position_x, position_y) {
 		}
 
 		for(var i = 0; i < this.leaves.length; i++) {
-			fill(255, 0, 100, 100);
+			fill(this.leaf_color);
 			ellipse(this.leaves[i].x, this.leaves[i].y, 8, 8);
-			// leaves[i].y += random(-1, 1);
 		}
 	}
 
@@ -48,7 +57,7 @@ function Tree(index, position_x, position_y) {
 
 		if(this.iter === MAX_ITER) {
 			// tree complete
-			console.log("finish growing: " + this.getTreeName());
+			console.log("finish growing: " + this.getTreeName() + ", branches: " + this.branches.length);
 			clearInterval(this.interval);
 			this._addLeaves();
 

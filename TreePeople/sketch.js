@@ -1,5 +1,3 @@
-// var theta;
-
 var canvas;
 
 var iter = 0;
@@ -9,7 +7,9 @@ var plant_tree_btn;
 
 var tree_planted = false;
 
-var TREE_WIDTH = 200;
+const TREE_WIDTH = 200;
+
+const TREE_GROWTH_SPEEDS = {"SLOW": 10000,"MEDIUM": 5000, "FAST": 1000, "STUPID_FAST_DEV_SPEED": 1} // milliseconds
 
 function preload() {
 
@@ -38,7 +38,7 @@ function plantTree() {
 
 	var idx = trees.length;
 	console.log(width/(this.max_trees+1));
-	var tree = new Tree(idx, (idx/this.max_trees)*width+(width/(this.max_trees*2)), height);
+	var tree = new Tree(idx, (idx/this.max_trees)*width+(width/(this.max_trees*2)), height, TREE_GROWTH_SPEEDS["STUPID_FAST_DEV_SPEED"]);
 	tree.setupTree();
 	trees.push(tree);
 
