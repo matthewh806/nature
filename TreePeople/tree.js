@@ -6,6 +6,7 @@ function Tree(index, position_x, position_y) {
 	this.leaves = [];
 	this.iter = 0;
 	this.index = index;
+	this.fully_grown = false;
 
 	this.setupTree = function() {
 		console.log("setup:" + this.getTreeName());
@@ -17,12 +18,12 @@ function Tree(index, position_x, position_y) {
 		this.branches[0] = root;
 
 		if(SELF_SUSTAINING) {
-			interval = setInterval(_.bind(this._growTree, this), 1000);
+			this.interval = setInterval(_.bind(this._growTree, this), 1000);
 		}
 	}
 
 	this.getTreeName = function() {
-		return "Tree: " + this.name;
+		return "Tree: " + this.index;
 	}
 
 	this.drawTree = function() {
@@ -38,15 +39,20 @@ function Tree(index, position_x, position_y) {
 	}
 
 	this._growTree = function() {
-		console.log("grow:" + this.getTreeName());
+		if(this.fully_grown)
+			return;
+
+		console.log("grow:" + this.getTreeName() + ", iter: " + this.iter);
 
 		this._addBranches();
 
-		if(iter > MAX_ITER) {
+		if(this.iter === MAX_ITER) {
 			// tree complete
-			console.log("finish growing:" + this.getTreeName());
-			clearInterval(interval);
+			console.log("finish growing: " + this.getTreeName());
+			clearInterval(this.interval);
 			this._addLeaves();
+
+			this.fully_grown = true;
 		}
 	}
 
@@ -60,7 +66,7 @@ function Tree(index, position_x, position_y) {
 			this.branches[i].finished = true;
 		}
 
-		iter++;
+		this.iter++;
 	}
 
 	this._addLeaves = function() {
