@@ -3,4 +3,11 @@
 # vim
 tags
 tags.lock
+*.swp
 
+# Vendors
+TreePeople/node_modules/
+
+# Build
+TreePeople/build/
+TreePeople/npm-debug.log
