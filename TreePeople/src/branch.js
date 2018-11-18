@@ -1,29 +1,33 @@
-function Branch(begin, end, color, angle, fixed_angle, scale_factor) {
+import p5 from 'p5'
+
+export default class Branch {
+constructor(begin, end, color, angle, fixed_angle, scale_factor) {
 	this.begin = begin;
 	this.end = end;
 	this.finished = false;
 	this.mag = p5.Vector.sub(this.end, this.begin).mag();
-	this.sw = map(this.mag, 2,120,1,10);
+	this.sw = myp5.map(this.mag, 2,120,1,10);
 	this.fixed_angle = fixed_angle;
-	this.angle = (typeof angle === 'undefined') ? random(0, PI/2) : angle;
-	this.scale_factor = (typeof scale_factor === 'undefined') ? random(0.45, 0.68) : scale_factor;
+	this.angle = (typeof angle === 'undefined') ? myp5.random(0, myp5.PI/2) : angle;
+	this.scale_factor = (typeof scale_factor === 'undefined') ? myp5.random(0.45, 0.68) : scale_factor;
 	this.color = color;
+}
 
-	this.show = function() {
-		strokeWeight(this.sw);
-		stroke(this.color);
-		line(this.begin.x, this.begin.y, this.end.x, this.end.y);
+	show() {
+		myp5.strokeWeight(this.sw);
+		myp5.stroke(this.color);
+		myp5.line(this.begin.x, this.begin.y, this.end.x, this.end.y);
 	}
 
-	this.branchA = function() {
+	branchA() {
 		return this._createBranch(this.begin, this.end, this.angle, this.scale_factor);
 	}
 
-	this.branchB = function() {
+	branchB() {
 		return this._createBranch(this.begin, this.end, -this.angle, this.scale_factor);
 	}
 
-	this._createBranch = function(begin, end, angle, mult_factor) {
+	_createBranch(begin, end, angle, mult_factor) {
 		var dir = p5.Vector.sub(end, begin);
 		dir.rotate(angle);
 		dir.mult(mult_factor);
