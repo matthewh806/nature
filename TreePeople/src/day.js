@@ -8,11 +8,10 @@ var PART_OF_DAY = {
 	NIGHT: 4
 };
 
-FIXED_TIME = PART_OF_DAY.EVENING;
+var FIXED_TIME = PART_OF_DAY.EVENING;
 
-function Day() {
-
-	this.getTreeColorSchemeForCurrentTime = function() {
+export default class Day {
+	getTreeColorSchemeForCurrentTime() {
 		if(this._isMorning() || this._isAfternoon()) 
 			return { 
 				leafColorSet: ['#ff0064', '#a0d5b5', '#ffffff', '#cf4532', '#cf9332', '#bdcf32'],
@@ -32,44 +31,44 @@ function Day() {
 			}
 	}
 
-	this.getColorForCurrentTime = function() {
+	getColorForCurrentTime() {
 		if(this._isMorning() || this._isAfternoon()) 
-			return color('#cdebf9');
+			return myp5.color('#cdebf9');
 
 		if(this._isEvening()) 
-			return color('#ffd6d6');
+			return myp5.color('#ffd6d6');
 
 		if(this._isNight()) 
-			return color('#000000');
+			return myp5.color('#000000');
 	}
 
-	this._isMorning = function(part_of_day) {
+	_isMorning(part_of_day) {
 		return this._getPartOfDay() === PART_OF_DAY.MORNING;
 	}
 
-	this._isAfternoon = function (part_of_day) {
+	_isAfternoon(part_of_day) {
 		return this._getPartOfDay() === PART_OF_DAY.AFTERNOON;
 	}
 
-	this._isEvening = function(part_of_day) {
+	_isEvening(part_of_day) {
 		return this._getPartOfDay() === PART_OF_DAY.EVENING;
 	}
 
-	this._isNight = function(part_of_day) {
+	_isNight(part_of_day) {
 		return this._getPartOfDay() === PART_OF_DAY.NIGHT;
 	}
 
-	this._getPartOfDay = function() {
-		if(DEV_MODE)
+	_getPartOfDay() {
+		if(DEBUG)
 			return FIXED_TIME;
 
-		if(hour() < 12) 
+		if(myp5.hour() < 12) 
 			return PART_OF_DAY.DAY;
 
-		if(hour() < 17) 
+		if(myp5.hour() < 17) 
 			return PART_OF_DAY.AFTERNOON;
 
-		if(hour() < 21)
+		if(myp5.hour() < 21)
 			return PART_OF_DAY.EVENING;
 
 		return PART_OF_DAY.NIGHT;
