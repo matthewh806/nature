@@ -5,7 +5,7 @@ const path = require('path');
 
 var definePlugin = new webpack.DefinePlugin({
     __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'true')),
-    DEBUG: true
+    DEBUG: false
 })
 
 module.exports = {
@@ -30,7 +30,11 @@ module.exports = {
                     presets: ['@babel/preset-env']
                 }
             }
-          }
+          },
+          {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
+            }
         ]
     },
 

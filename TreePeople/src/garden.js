@@ -9,14 +9,31 @@ const X_AXIS = 2;
 
 export default class Garden {
 	constructor() {
-		this.iter = 0;
 		this.trees = [];
 		this.plant_tree_btn;
 		this.day = new Day();
-		this.tree_planted = false;
-
 		this.max_trees = myp5.int(myp5.width / 200);
 
+		this.plant_tree_btn = myp5.select('.js-make-tree');
+		this.plant_tree_btn.mousePressed(_.bind(function() {
+			this.plantTreeClicked();
+		}, this));
+
+		this.iterations_select = myp5.select('.js-select-iterations');
+		this.iterations_select.changed(_.bind(function() {
+			this.clearGarden();
+
+			if(DEBUG) {
+				for(var i = 0; i < this.max_trees; i++) {
+					this.plantTree();
+				}
+			}
+		}, this));
+
+		this.tree_count_txt = myp5.select('.js-no-trees').html(0);
+		this.branch_count_txt = myp5.select('.js-no-branches').html(0);
+		this.leaf_count_txt = myp5.select('.js-no-leaves').html(0);
+		
 		if(DEBUG) {
 			for(var i = 0; i < this.max_trees; i++) {
 				this.plantTree();
@@ -30,9 +47,21 @@ export default class Garden {
 		var target_c = this.day.getColorForCurrentTime();
 		this.setGradient(0, 0, myp5.width, myp5.height, myp5.color('#ffffff'), target_c, Y_AXIS);
 
-		if(this.tree_planted) {
-			_.each(this.trees, function(t) { t.drawTree(); });
-		}
+		_.each(this.trees, function(t) { t.drawTree(); });
+
+		this.updateUI()
+	}
+
+	updateUI() {
+		var branches = this.trees.reduce((s, t) => s + t.getNumberOfBranches(), 0) - this.trees.length;
+		var leaves = this.trees.reduce((s, t) => s + t.getNumberOfLeaves(), 0);
+
+		this.branch_count_txt.html(branches);
+		this.leaf_count_txt.html(leaves);
+	}
+
+	clearGarden() {
+		this.trees = [];
 	}
 
 	plantTreeClicked() {
@@ -57,7 +86,8 @@ export default class Garden {
 		var scheme = this.day.getTreeColorSchemeForCurrentTime();
 
 		var config = {
-			colorScheme: scheme
+			colorScheme: scheme,
+			maxIter: this.iterations_select.value()
 		};
 
 		var x_pos = (idx/this.max_trees)*myp5.width+(myp5.width/(this.max_trees*2));
@@ -66,10 +96,11 @@ export default class Garden {
 		this.trees.push(tree);
 
 		this.tree_planted = true;
+
+		this.tree_count_txt.html(this.trees.length);
 	}
 
 	maxTreesPlanted() {
-		console.log(this.trees.length);
 		return this.trees.length === this.max_trees;
 	}
 

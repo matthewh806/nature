@@ -1,0 +1,35 @@
+.garden {
+	display: inline-block;
+	float: left;
+}
+
+
+.boring-area {
+	width: 350px;
+	height: 700px;
+	display:inline-block;
+}
+
+.controls {
+	width:300px;
+	padding:20px;
+	display: inline-block;
+}
+
+.information {
+	width: 300px;
+	height: 200px;
+	padding: 20px;
+	/*background: black;*/
+	display: inline-block;
+}
+
+.information.info-header {
+	font-family: monospace;
+	background-color: #FF0000;
+}
+
+.information.info-text {	
+	font-size: 18pt;
+	padding: 10px;
+}
