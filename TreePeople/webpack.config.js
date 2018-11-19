@@ -3,11 +3,17 @@
 const webpack = require('webpack');
 const path = require('path');
 
+var definePlugin = new webpack.DefinePlugin({
+    __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'true')),
+    DEBUG: true
+})
+
 module.exports = {
 
     entry: './src/app.js',
 
     mode: 'development',
+    devtool: 'inline-source-map',
 
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -29,6 +35,7 @@ module.exports = {
     },
 
     plugins: [
+        definePlugin
     ]
 
 };

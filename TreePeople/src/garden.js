@@ -6,7 +6,6 @@ const TREE_WIDTH = 200;
 const TREE_GROWTH_SPEEDS = {"SLOW": 3000,"MEDIUM": 1500, "FAST": 1000, "STUPID_FAST_DEV_SPEED": 0} // milliseconds
 const Y_AXIS = 1;
 const X_AXIS = 2;
-window.DEBUG = true;
 
 export default class Garden {
 	constructor() {
